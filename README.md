@@ -190,7 +190,7 @@ Again to ensure equal priority the reader and writers line up in the mutex_in. (
 ## References 
 
     - Abraham Silberschatz, Peter B. Galvin, Greg Gagne - Operating System Concepts
-    - [arXiv:1309.4507](https://arxiv.org/pdf/1309.4507.pdf)
+    - [arXiv:1309.4507](https://arxiv.org/abs/1309.4507)
 
 
 
