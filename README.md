@@ -16,7 +16,7 @@ Considering a `reader` proccess we can formulate an overview of the solution ->
         wait 
         // for the signal
 	
-//Read
+    //Read
 
     if( is the last reader)
 	    signal the waiting writers
@@ -31,37 +31,36 @@ Code:
 
 ```C++
 
+struct Node{
+    int data;
+    Node *next;
+}
+
 struct Queue{
     Node* Front, Rear;
-        void push(int data)
-        {
-            Node* newNode = new Node();
-            newNode->value = data;
-            if(Rear != NULL)
-            {
+        void push(int data){
+            Node *newNode = (Node*)malloc(sizeof(Node));
+            newNode->data = data;
+            if(Rear != NULL){
                 Rear->next = newNode;
                 Rear = newNode;
             }
-            else
-            {
+            else{
                 Front = Rear = newNode;
             }
         }
     
-        int pop()
-        {
-            if(Front == NULL)
-            {
+        int pop(){
+            if(Front == NULL){
                 // underflow condition
                 return -1; 
                 
             }
-            else
-            {
-                int data = Front->value;
+            else{
+                int data = Front->data;
                 Front = Front->next;
-                if(Front == NULL)
-                {
+                free(Front)
+                if(Front == NULL){
                     Rear = NULL;
                 }
                 return data;
@@ -76,27 +75,21 @@ Code:
 ```C++
 {
     struct Semaphore{
-        int value = 1;
+        int data = 1;
         Queue* Q = new Queue();
-            void wait(int process_id)
-        {
-            value--;
-            if(value < 0)
-            {
-                Q->push(process_id);
+        void wait(semaphore **s , int pid){
+            *s->data--;
+            if(*s->data <= -1){
+                *s->Q.push(process_id);
                 block(); 
-                //this function will block the proccess until it's woken up.
-                // Non-busy waiting time is used here but busy waiting is also possible 
-                // in case of block() and wakeup() equivalents being not callable or available in the language.
+                //process will be blocked until a signaled
             }
         }
         
-        void signal()
-        {
-            value++;
-            if(value <= 0)
-            {
-                int pid = Q->pop();
+        void signal(semaphore **s){
+            *s->data++;
+            if(*s->data < 1){
+                int pid = *s->Q.pop();
                 wakeup(pid); 
                 // Assuming the pid is given, wakeup() will wakeup the process with given pid.
             }
